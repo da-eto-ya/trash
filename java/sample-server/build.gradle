@@ -1,0 +1,23 @@
+group 'info.da_eto'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile 'org.eclipse.jetty:jetty-server:9.3.3.v20150827'
+    compile 'org.eclipse.jetty:jetty-servlet:9.3.3.v20150827'
+}
+
+task(server, dependsOn: 'classes', type: JavaExec) {
+    main = 'info.da_eto.sample_server.SampleServer'
+    classpath = sourceSets.main.runtimeClasspath
+    standardInput = System.in
+}
+
+defaultTasks 'server'
