@@ -161,7 +161,7 @@ int main() {
     // in
     size_t n, m;
     std::cin >> n >> m;
-    matrix<long long> &a = *new matrix<long long>(n, m + 1);
+    matrix<long long> a = *new matrix<long long>(n, m + 1);
 
     for (size_t i = 0; i < n; ++i) {
         for (size_t j = 0; j <= m; ++j) {
@@ -187,8 +187,6 @@ int main() {
     } else {
         std::cout << "INF" << std::endl;
     }
-
-    delete &a;
 
     return 0;
 }
