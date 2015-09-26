@@ -28,7 +28,8 @@ public:
 };
 
 int main() {
-    Hi &a0 = *new Hi(0);
+    Hi *a0 = new Hi(0);
+    Hi &r0 = *a0;
     Hi *a1 = new Hi(1);
 
     return 0;
