@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 2.8)
 project(simple_examples)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++03 -Wall")
@@ -12,3 +12,4 @@ add_executable(intlog intlog.cpp)
 add_executable(newref newref.cpp)
 add_executable(array_shift array_shift.cpp)
 add_executable(getline getline.cpp)
+add_executable(cohesion cohesion.cpp)
