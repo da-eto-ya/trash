@@ -6,12 +6,10 @@ public class Factorial {
     }
 
     public static BigInteger factorial(int value) {
-        BigInteger res = BigInteger.valueOf(1);
-
-        for (int i = 1; i <= value; i++) {
-            res = res.multiply(BigInteger.valueOf(i));
-        }
-
-        return res;
+        return value < 2 ? BigInteger.ONE :
+                java.util.stream.IntStream.rangeClosed(2, value)
+                .parallel()
+                .mapToObj(BigInteger::valueOf)
+                .reduce(BigInteger.ONE, BigInteger::multiply);
     }
 }
