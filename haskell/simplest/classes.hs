@@ -11,5 +11,16 @@ instance Printable () where
 instance (Printable a, Printable b) => Printable (a, b) where
   toString (x, y) = "(" ++ toString x ++ "," ++ toString y ++ ")"
 
+class (Enum a, Eq a, Bounded a) => SafeEnum a where
+  ssucc :: a -> a
+  ssucc x | x == maxBound = minBound
+          | otherwise     = succ x
+
+  spred :: a -> a
+  spred x | x == minBound = maxBound
+          | otherwise     = pred x
+
+instance SafeEnum Char
+
 main :: IO ()
-main = putStrLn (toString True ++ " : " ++ toString False ++ " : " ++ toString () ++ " : " ++ toString ((), False))
+main = putStrLn (toString True ++ " : " ++ toString False ++ " : " ++ toString () ++ " : " ++ toString ((), False) ++ show (spred '\NUL'))
