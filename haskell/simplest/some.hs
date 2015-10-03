@@ -27,5 +27,22 @@ seqA n = let
     seqA' a0 a1 a2 k = seqA' a1 a2 (a2 + a1 - 2 * a0) (k - 1)
   in seqA' 1 2 3 n
 
+sum'n'count :: Integer -> (Integer, Integer)
+sum'n'count = sum'n'count' 0 1 where
+  sum'n'count' s c n | n < 0     = sum'n'count' s c (-n)
+                     | n >= 10   = sum'n'count' (s + n `mod` 10) (c + 1) (n `div` 10)
+                     | otherwise = (s + n, c)
+
+integration :: (Double -> Double) -> Double -> Double -> Double
+integration f a b | a > b     = -integration f b a
+                  | a == b    = 0
+                  | otherwise = sum' 0 n where
+  n = 1000
+  sum' acc 0 = acc
+  sum' acc k = sum' (acc + f xi * dx) (k - 1) where
+    xi = (x k + x (k - 1)) / 2
+    dx = x k - x (k - 1)
+    x m = a + (m / n) * (b - a)
+
 main :: IO ()
 main = putStrLn "hello"
