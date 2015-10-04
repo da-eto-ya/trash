@@ -22,5 +22,15 @@ class (Enum a, Eq a, Bounded a) => SafeEnum a where
 
 instance SafeEnum Char
 
+avg :: Int -> Int -> Int -> Double
+avg x y z = (/3) $ sum $ map fromIntegral [x, y, z]
+
 main :: IO ()
-main = putStrLn (toString True ++ " : " ++ toString False ++ " : " ++ toString () ++ " : " ++ toString ((), False) ++ show (spred '\NUL'))
+main = putStrLn (
+  toString True ++ " : " ++
+  toString False ++ " : " ++
+  toString () ++ " : " ++
+  toString ((), False) ++ " : " ++
+  show (spred '\NUL') ++ " : " ++
+  show (avg 3 4 5)
+  )
