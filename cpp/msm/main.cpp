@@ -17,11 +17,11 @@ public:
 
     virtual ~matrix<T>() { }
 
-    size_t getRows() const {
+    size_t getRows() {
         return rows;
     }
 
-    size_t getCols() const {
+    size_t getCols() {
         return cols;
     }
 
@@ -34,18 +34,6 @@ private:
     size_t rows;
     size_t cols;
 };
-
-long long gcd(long long a, long long b) {
-    long long c;
-
-    while (0 != a) {
-        c = a;
-        a = b % a;
-        b = c;
-    }
-
-    return b;
-}
 
 template<class T>
 void gaussify(matrix<T> &a) {
@@ -103,7 +91,8 @@ void diagonalize(matrix<T> &a) {
     }
 }
 
-double scalarProd(const matrix &m, size_t a, size_t b) {
+template <class T>
+double scalarProd(matrix<T> &m, size_t a, size_t b) {
     double sum = 0;
 
     for (size_t i = 0; i < m.getRows(); ++i) {
@@ -128,12 +117,22 @@ int main() {
     matrix<double > b(m, m+1);
 
     for (size_t i = 0; i < m; ++i) {
-        
+        for (size_t j = 0; j <= m; ++j) {
+            b[i][j] = scalarProd(a, i, j);
+        }
     }
 
     // solve
     gaussify(b);
     diagonalize(b);
+
+    std::cout.precision(15);
+
+    for (size_t i = 0; i < m; ++i) {
+        std::cout << b[i][m] / b[i][i] << " ";
+    }
+
+    std::cout << std::endl;
 
     return 0;
 }
