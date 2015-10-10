@@ -9,11 +9,11 @@ public class Caller {
     }
 
     public static String getCallerClassAndMethodName() {
-        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        StackTraceElement[] stackTraceElements = new Exception().getStackTrace();
 
-        if (stackTraceElements.length > 3) {
-            StackTraceElement lastElem = stackTraceElements[3];
-            return lastElem.getClassName() + "#" + lastElem.getMethodName();
+        if (stackTraceElements.length > 2) {
+            StackTraceElement callerElement = stackTraceElements[2];
+            return callerElement.getClassName() + "#" + callerElement.getMethodName();
         }
 
         return null;
