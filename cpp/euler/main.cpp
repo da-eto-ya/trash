@@ -6,6 +6,23 @@ std::vector<std::vector<size_t> > g;
 size_t v, e;
 std::vector<size_t> path;
 
+bool check_all_vertices() {
+    std::vector<bool> color;
+    color.resize(v);
+
+    for (int i = 0; i < path.size(); ++i) {
+        color[path[i]] = true;
+    }
+
+    for (int i = 0; i < color.size(); ++i) {
+        if (!color[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 bool all_vertices_even() {
     for (size_t i = 0; i < v; ++i) {
         int sum = 0;
@@ -67,9 +84,9 @@ int main() {
 
     bool result = false;
 
-    if (all_vertices_even()) {
+    if (e > 0 && all_vertices_even()) {
         find_euler_path(0);
-        result = check_all_edges();
+        result = check_all_edges() && check_all_vertices();
     }
 
     if (result) {
