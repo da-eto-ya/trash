@@ -18,8 +18,8 @@ struct Boo : Foo {
 };
 
 const Foo get_foo(const char *msg) {
-    Boo *boo = new Boo(msg);
-    return *boo;
+    Boo boo(msg);
+    return boo;
 }
 
 int main() {
