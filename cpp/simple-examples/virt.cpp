@@ -15,6 +15,11 @@ struct B : A {
     virtual void some() const {
         std::cout << "B::some" << std::endl;
     }
+
+    void opa() {
+        std::cout << "B::opa" << std::endl;
+        some();
+    }
 };
 
 int main() {
@@ -22,6 +27,10 @@ int main() {
     a.some();
 
     B b;
+    b.some();
+    b.opa();
+
+    B &bb = b;
     b.some();
 
     return 0;
