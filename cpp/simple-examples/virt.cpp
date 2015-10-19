@@ -1,17 +1,18 @@
 #include <iostream>
 
 struct A {
-    void other() const {
-        std::cout << "A::other" << std::endl;
-    }
-
     virtual void some() const {
         std::cout << "A::some" << std::endl;
         other();
     }
+
+private:
+    virtual void other() const {
+        std::cout << "A::other" << std::endl;
+    }
 };
 
-struct B : A {
+struct B : private A {
     virtual void some() const {
         std::cout << "B::some" << std::endl;
     }
@@ -19,6 +20,10 @@ struct B : A {
     void opa() {
         std::cout << "B::opa" << std::endl;
         some();
+    }
+
+    virtual void other() const {
+        std::cout << "B::other" << std::endl;
     }
 };
 
@@ -31,7 +36,9 @@ int main() {
     b.opa();
 
     B &bb = b;
-    b.some();
+    bb.some();
+
+    bb.other();
 
     return 0;
 }
