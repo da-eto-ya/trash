@@ -16,7 +16,7 @@ struct Expression {
 
     virtual void visit(Visitor *vistitor) const = 0;
 
-    virtual ~Expression();
+    virtual ~Expression() { }
 };
 
 struct Number : Expression {
@@ -76,8 +76,8 @@ struct BinaryOperation : Expression {
 
 private:
     Expression const *left;
-    Expression const *right;
     char op;
+    Expression const *right;
 };
 
 // TODO
@@ -91,3 +91,16 @@ struct PrintVisitor : Visitor {
     }
 };
 
+int main() {
+    std::cout << (new BinaryOperation(
+            new Number(1.3),
+            '*',
+            new BinaryOperation(
+                    new Number(4.2),
+                    '-',
+                    new Number(1.2)
+            )
+    ))->evaluate();
+
+    return 0;
+}
