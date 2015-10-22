@@ -83,16 +83,20 @@ private:
 // TODO
 struct PrintVisitor : Visitor {
     void visitNumber(Number const *number) {
-        /* ... */
+        std::cout << number->evaluate();
     }
 
     void visitBinaryOperation(BinaryOperation const *bop) {
-        /* ... */
+        std::cout << "(";
+        bop->get_left()->visit(this);
+        std::cout << " " << bop->get_op() << " ";
+        bop->get_right()->visit(this);
+        std::cout << ")";
     }
 };
 
 int main() {
-    std::cout << (new BinaryOperation(
+    Expression *expr = new BinaryOperation(
             new Number(1.3),
             '*',
             new BinaryOperation(
@@ -100,7 +104,13 @@ int main() {
                     '-',
                     new Number(1.2)
             )
-    ))->evaluate();
+    );
+
+    std::cout << expr->evaluate() << std::endl;
+
+    Visitor *visitor = new PrintVisitor;
+    expr->visit(visitor);
+    std::cout << std::endl;
 
     return 0;
 }
