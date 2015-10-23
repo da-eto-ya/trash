@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(simple_examples)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++03 -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++03 -Wall -fpermissive")
 
 add_executable(roots roots.cpp)
 add_executable(syntax syntax.cpp)

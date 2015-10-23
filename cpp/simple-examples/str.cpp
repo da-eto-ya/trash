@@ -45,12 +45,46 @@ struct String {
         size += other.size;
     }
 
+    struct StringSlice;
+
+    StringSlice operator[](size_t from) const;
+
     size_t size;
     char *str;
 };
 
+struct String::StringSlice {
+    StringSlice(size_t from, const String &source) : from(from), size(source.size - from), str(new char[size + 1]) {
+        for (size_t i = 0; i < size; ++i) {
+            str[i] = source.str[from + i];
+        }
+
+        str[size] = '\0';
+    }
+
+    ~StringSlice() {
+        delete[] str;
+    }
+
+    String operator[](size_t to) const {
+        str[to - from] = '\0';
+
+        return String(str);
+    }
+
+    size_t from;
+    size_t size;
+    char *str;
+};
+
+String::StringSlice String::operator[](size_t from) const {
+    return StringSlice(from, *this);
+}
+
 int main() {
-    String s("Hello");
-    s.append(", world");
-    std::cout << s.str << std::endl;
+    String hello("hello");
+    hello.append(", world");
+
+    const String hell = hello[0][4];
+    std::cout << hell.str << std::endl;
 }
