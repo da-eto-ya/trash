@@ -80,7 +80,6 @@ private:
     Expression const *right;
 };
 
-// TODO
 struct PrintVisitor : Visitor {
     void visitNumber(Number const *number) {
         std::cout << number->evaluate();
