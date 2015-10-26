@@ -17,3 +17,12 @@ sum3 xs ys zs = sum2 (sum2 xs ys) zs where
   sum2 []     ys     = ys
   sum2 xs     []     = xs
 
+groupElems :: Eq a => [a] -> [[a]]
+groupElems xs = reverse $ map reverse $ groupElems' xs [] where
+  groupElems' []     gs = gs
+  groupElems' (x:xs) [] = groupElems' xs [[x]]
+  groupElems' (x:xs) (g:gs) =
+    if head g == x
+      then groupElems' xs ((x:g) : gs)
+      else groupElems' xs ([x] : g : gs)
+
