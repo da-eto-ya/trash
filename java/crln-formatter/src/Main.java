@@ -25,8 +25,6 @@ public class Main {
         if (prev == CR) {
             outputStream.write(prev);
         }
-
-        outputStream.flush();
     }
 
     public static void main(String[] args) throws IOException {
@@ -35,5 +33,6 @@ public class Main {
 
     private void run() throws IOException {
         replaceCRLN(System.in, System.out);
+        System.out.flush();
     }
 }
