@@ -1,6 +1,5 @@
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
+import java.nio.charset.Charset;
 
 public class Main {
     public static final int CR = 13;
@@ -25,6 +24,20 @@ public class Main {
         if (prev == CR) {
             outputStream.write(prev);
         }
+    }
+
+    public static String readAsString(InputStream inputStream, Charset charset) throws IOException {
+        StringBuilder builder = new StringBuilder();
+
+        try (Reader reader = new InputStreamReader(inputStream, charset)) {
+            int ch;
+
+            while ((ch = reader.read()) >= 0) {
+                builder.append((char) ch);
+            }
+        }
+
+        return builder.toString();
     }
 
     public static void main(String[] args) throws IOException {
