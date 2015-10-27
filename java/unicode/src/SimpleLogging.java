@@ -1,3 +1,6 @@
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.*;
 
 public class SimpleLogging {
@@ -351,7 +354,19 @@ public class SimpleLogging {
         }
     }
 
-    public static void main(String[] args) {
+    public static int checkSumOfStream(InputStream inputStream) throws IOException {
+        int c = 0;
+        int b;
 
+        while ((b = inputStream.read()) >= 0) {
+            c = Integer.rotateLeft(c, 1) ^ b;
+        }
+
+        return c;
+    }
+
+    public static void main(String[] args) throws IOException {
+        InputStream stream = new ByteArrayInputStream(new byte[]{0x33, 0x45, 0x01});
+        System.out.println(checkSumOfStream(stream));
     }
 }
