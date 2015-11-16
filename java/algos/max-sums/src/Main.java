@@ -4,21 +4,22 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         long n = scanner.nextLong();
-        long k = (long) Math.floor(Math.sqrt(1L + 4L * n) / 2.0);
+        long k = 1;
 
-        if ((k + 1L) * (k + 2L) == 2 * n) {
-            k = k + 1;
+        while (k * (k + 1L) <= 2 * n) {
+            ++k;
         }
 
-        long r = k * (k + 1L) / 2;
+        --k;
 
         System.out.println(k);
 
-        for (long i = 1L; i < k; i++) {
+        for (long i = 1; i < k; i++) {
             System.out.print(i);
             System.out.print(" ");
         }
 
-        System.out.print(k + (n - r));
+        long r = n - (k * (k - 1)) / 2;
+        System.out.println(r);
     }
 }
