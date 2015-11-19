@@ -12,6 +12,7 @@ public class Main {
         private int frequency;
         private Node left;
         private Node right;
+        private String code;
 
         public Node(char label, int frequency) {
             this.label = label;
@@ -28,31 +29,32 @@ public class Main {
             return frequency;
         }
 
-        public Node getLeft() {
-            return left;
-        }
-
-        public Node getRight() {
-            return right;
-        }
-
         public char getLabel() {
             return label;
         }
 
-        public void print() {
-            print("", true);
+        // TODO: merge buildCodes and getCodes
+        public void buildCodes(String prefix) {
+            if (label != 0) {
+                code = prefix;
+            } else {
+                left.buildCodes(prefix + "0");
+                right.buildCodes(prefix + "1");
+            }
         }
 
-        private void print(String prefix, boolean isTail) {
-            System.out.println(prefix + (isTail ? "└── " : "├── ") + frequency + (label != 0 ? " (" + label + ")" : ""));
+        public String[] getCodes() {
+            String[] codes = new String[26];
+            fillCode(codes);
+            return codes;
+        }
 
-            if (left != null) {
-                left.print(prefix + (isTail ? "    " : "│   "), false);
-            }
-
-            if (right != null) {
-                right.print(prefix + (isTail ?"    " : "│   "), true);
+        private void fillCode(String[] codes) {
+            if (label != 0) {
+                codes[label - 'a'] = code;
+            } else {
+                left.fillCode(codes);
+                right.fillCode(codes);
             }
         }
     }
@@ -82,6 +84,43 @@ public class Main {
         }
 
         Node result = queue.poll();
-        result.print();
+
+        // FIXME: bad code, bad!
+        if (result.getLabel() != 0) {
+            result.buildCodes("0");
+        } else {
+            result.buildCodes("");
+        }
+
+        String[] codes = result.getCodes();
+        int k = 0;
+
+        for (int i = 0; i < codes.length; i++) {
+            if (codes[i] != null) {
+                ++k;
+            }
+        }
+
+        StringBuilder sb = new StringBuilder(s.length() * 10);
+
+        for (char ch : s.toCharArray()) {
+            sb.append(codes[ch - 'a']);
+        }
+
+        String r = sb.toString();
+
+        System.out.print(k);
+        System.out.print(" ");
+        System.out.println(r.length());
+
+        for (int i = 0; i < codes.length; i++) {
+            if (codes[i] != null) {
+                System.out.print((char) ('a' + i));
+                System.out.print(": ");
+                System.out.println(codes[i]);
+            }
+        }
+
+        System.out.println(r);
     }
 }
