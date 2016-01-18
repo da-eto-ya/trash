@@ -47,13 +47,13 @@ int main() {
         }
 
         while (true) {
-            ssize_t read_count = recv(connection, buffer, buffer_size, 0);
+            ssize_t read_count = recv(connection, buffer, buffer_size, MSG_NOSIGNAL);
 
             if (read_count <= 0) {
                 break;
             }
 
-            if (send(connection, buffer, read_count, 0) == -1) {
+            if (send(connection, buffer, read_count, MSG_NOSIGNAL) == -1) {
                 break;
             };
         }
