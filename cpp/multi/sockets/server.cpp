@@ -3,10 +3,9 @@
 #include <sys/un.h>
 #include <unistd.h>
 
-#define BUFFER_SIZE 2048
-
 int main() {
-    char buffer[BUFFER_SIZE];
+    const size_t buffer_size = 2048;
+    char buffer[buffer_size];
 
     // specify address
     sockaddr_un address;
@@ -37,7 +36,7 @@ int main() {
         return -3;
     }
 
-    // read socket
+    // accept connections
     while (true) {
         int connection = accept(master_socket, 0, 0);
 
@@ -48,13 +47,15 @@ int main() {
         }
 
         while (true) {
-            ssize_t read_bytes = recv(connection, buffer, BUFFER_SIZE, 0);
+            ssize_t read_count = recv(connection, buffer, buffer_size, 0);
 
-            if (read_bytes <= 0) {
+            if (read_count <= 0) {
                 break;
             }
 
-            send(connection, buffer, read_bytes, 0);
+            if (send(connection, buffer, read_count, 0) == -1) {
+                break;
+            };
         }
 
         close(connection);
