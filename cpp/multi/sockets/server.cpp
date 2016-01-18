@@ -1,7 +1,15 @@
+#include <ctime>
 #include <iostream>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <unistd.h>
+
+std::string current_time() {
+    std::time_t tm = std::time(NULL);
+    std::string t(std::ctime(&tm));
+
+    return t.substr(0, t.length() - 1);
+}
 
 int main() {
     const size_t buffer_size = 2048;
@@ -46,8 +54,11 @@ int main() {
             return -4;
         }
 
+
+        std::cout << "[" << current_time() << "]+ " << "New client connected." << std::endl;
+
         while (true) {
-            ssize_t read_count = recv(connection, buffer, buffer_size, MSG_NOSIGNAL);
+            ssize_t read_count = recv(connection, buffer, buffer_size - 1, MSG_NOSIGNAL);
 
             if (read_count <= 0) {
                 break;
@@ -56,9 +67,14 @@ int main() {
             if (send(connection, buffer, read_count, MSG_NOSIGNAL) == -1) {
                 break;
             };
+
+            buffer[read_count] = '\0';
+            std::cout << "[" << current_time() << "]> " << buffer << std::endl;
         }
 
         close(connection);
+
+        std::cout << "[" << current_time() << "]- " << "Client disconnected." << std::endl;
     }
 
     return 0;
