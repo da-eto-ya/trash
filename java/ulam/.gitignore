@@ -1,0 +1,9 @@
+# IDE & build
+.idea/
+*.iml
+
+# lib & output files
+lib/
+target/
+ulam*.tiff
+ulam*.jpg
