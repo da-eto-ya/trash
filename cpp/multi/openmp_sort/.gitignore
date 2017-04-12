@@ -1,0 +1,8 @@
+openmp_sort
+CMakeFiles/
+CMakeCache.txt
+Makefile
+
+cmake_install.cmake
+in.txt
+out.txt
