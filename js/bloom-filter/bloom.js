@@ -1,1 +1,1 @@
-alert('check ghp js loading');
+document.write('<p>hello, js</p>');
