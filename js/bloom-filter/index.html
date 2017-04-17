@@ -117,6 +117,14 @@
             probSpan.textContent = "p ≈ " + p + "%";
         }
 
+        function showPositions(positions) {
+            if (positions.length > 0) {
+                keyResult.textContent = positions.join(', ');
+            } else {
+                keyResult.innerHTML = ' &nbsp; ';
+            }
+        }
+
         // when show hashes (on input change, before add)
         keyInput.oninput = function () {
             var key = keyInput.value.trim();
@@ -129,7 +137,7 @@
             }
 
             markCells(positions, color);
-            keyResult.textContent = positions.join(', ') || ' ';
+            showPositions(positions);
         };
 
         // add value to filter
