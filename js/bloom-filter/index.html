@@ -4,44 +4,73 @@
     <meta charset="UTF-8">
     <title>Check github</title>
     <style>
-        body, input, button {
+        body, input, button, label {
             font-size: 2.5rem;
+            font-family: "Palatino Linotype", "Times New Roman", sans-serif;
+        }
+
+        input, button, label {
+            display: inline-block;
+            width: 5em;
+        }
+
+        table {
+            margin: 0 auto;
+            text-align: center;
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 2px solid #aaa;
+            padding: 0 .3em;
+            font-family: "Fira Code", "Fira Mono", "Courier New", monospace;
+        }
+
+        p {
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-<p>
+<form action="javascript:;">
+    <p>
+    <span>
     <input type="text" name="key" id="key" value=""/>
-    <button name="add">add to filter</button>
+    <button name="add" type="submit">add</button>
     <label for="key" id="key-result"></label>
-</p>
-<p>
-    <span id="added"></span>
-</p>
+    </span>
+    </p>
+    <p>
+        <span id="added"> &nbsp; </span>
+    </p>
+    <p>
+        <span id="prob"> &nbsp; </span>
+    </p>
 
-<table border="1" cellpadding="5" cellspacing="1">
-    <tr>
-        <td class="cell">0</td>
-        <td class="cell">0</td>
-        <td class="cell">0</td>
-        <td class="cell">0</td>
-        <td class="cell">0</td>
-        <td class="cell">0</td>
-        <td class="cell">0</td>
-        <td class="cell">0</td>
-        <td class="cell">0</td>
-        <td class="cell">0</td>
-        <td class="cell">0</td>
-        <td class="cell">0</td>
-        <td class="cell">0</td>
-        <td class="cell">0</td>
-        <td class="cell">0</td>
-        <td class="cell">0</td>
-        <td class="cell">0</td>
-        <td class="cell">0</td>
-    </tr>
-</table>
+    <table border="1" cellpadding="5" cellspacing="1">
+        <tr>
+            <td class="cell">0</td>
+            <td class="cell">0</td>
+            <td class="cell">0</td>
+            <td class="cell">0</td>
+            <td class="cell">0</td>
+            <td class="cell">0</td>
+            <td class="cell">0</td>
+            <td class="cell">0</td>
+            <td class="cell">0</td>
+            <td class="cell">0</td>
+            <td class="cell">0</td>
+            <td class="cell">0</td>
+            <td class="cell">0</td>
+            <td class="cell">0</td>
+            <td class="cell">0</td>
+            <td class="cell">0</td>
+            <td class="cell">0</td>
+            <td class="cell">0</td>
+        </tr>
+    </table>
+</form>
 
 <script src="BloomFilter.js"></script>
 <script>
@@ -52,6 +81,9 @@
         var keyResult = document.getElementById('key-result');
         var addButton = document.getElementsByName('add')[0];
         var addedSpan = document.getElementById('added');
+        var probSpan = document.getElementById('prob');
+
+        // some state vars
         var added = [];
 
         // Bloom filter instance
@@ -72,9 +104,10 @@
             });
         }
 
-        function showAdded(added) {
+        function updateAdded() {
             var p = Math.round(100 * Math.pow((1 - Math.exp(-hashCount * added.length / size)), hashCount));
-            addedSpan.textContent = "{" + added.join(", ") + "}, p ≈ " + p + "%";
+            addedSpan.textContent = "{" + added.join(", ") + "}";
+            probSpan.textContent = "p ≈ " + p + "%";
         }
 
         // when show hashes (on input change, before add)
@@ -96,20 +129,13 @@
         addButton.onclick = function () {
             var key = keyInput.value.trim();
 
-            if (key !== "") {
+            if (key !== "" && added.indexOf(key) < 0) {
                 bloom.add(key);
-
-                if (added.indexOf(key) < 0) {
-                    added.push(key);
-                }
-
+                added.push(key);
                 var positions = bloom.hash(key);
                 markCells(positions, 'cyan');
                 fillCells(positions);
-
-                if (added.length) {
-                    showAdded(added);
-                }
+                updateAdded();
             }
         }
     })();
