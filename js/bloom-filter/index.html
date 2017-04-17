@@ -3,9 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <title>Check github</title>
+    <style>
+        body, input, button {
+            font-size: 16pt;
+        }
+    </style>
 </head>
 <body>
-Check github
+
+<p>
+    <input type="text" name="key" id="key" value=""/>
+    <button name="add">add to filter</button>
+    <label for="key" id="key-result"></label>
+</p>
+<p>
+    <span id="added">{}</span>
+</p>
+
+<table border="1" cellpadding="5" cellspacing="1">
+    <tr>
+        <td class="cell">0</td>
+        <td class="cell">0</td>
+        <td class="cell">0</td>
+        <td class="cell">0</td>
+        <td class="cell">0</td>
+        <td class="cell">0</td>
+        <td class="cell">0</td>
+        <td class="cell">0</td>
+        <td class="cell">0</td>
+        <td class="cell">0</td>
+        <td class="cell">0</td>
+        <td class="cell">0</td>
+        <td class="cell">0</td>
+        <td class="cell">0</td>
+        <td class="cell">0</td>
+        <td class="cell">0</td>
+        <td class="cell">0</td>
+        <td class="cell">0</td>
+    </tr>
+</table>
+
 <script src="BloomFilter.js"></script>
+<script>
+    (function () {
+        // page elements
+        var cells = document.querySelectorAll('.cell');
+        var keyInput = document.getElementById('key');
+        var keyResult = document.getElementById('key-result');
+        var addButton = document.getElementsByName('add')[0];
+        var addedSpan = document.getElementById('added');
+        var added = [];
+
+        // Bloom filter instance
+        var size = cells.length;
+        var hashCount = 3;
+        var bloom = new BloomFilter(size, hashCount);
+
+        // visual highlights
+        function markCells(positions, color) {
+            cells.forEach(function (el, i) {
+                el.style.backgroundColor = positions.indexOf(i) >= 0 ? color : '';
+            });
+        }
+
+        function fillCells(positions) {
+            positions.forEach(function (num) {
+                cells[num].textContent = "1";
+            });
+        }
+
+        function showAdded(added) {
+            addedSpan.textContent = "{" + added.join(", ") + "}"
+        }
+
+        // when show hashes (on input change, before add)
+        keyInput.oninput = function () {
+            var key = keyInput.value.trim();
+            var positions = [];
+            var color = '';
+
+            if (key !== "") {
+                positions = bloom.hash(key);
+                color = bloom.test(key) ? 'lightGreen' : 'yellow';
+            }
+
+            markCells(positions, color);
+            keyResult.textContent = positions.join(', ');
+        };
+
+        // add value to filter
+        addButton.onclick = function () {
+            var key = keyInput.value.trim();
+
+            if (key !== "") {
+                bloom.add(key);
+
+                if (added.indexOf(key) < 0) {
+                    added.push(key);
+                }
+
+                var positions = bloom.hash(key);
+                markCells(positions, 'cyan');
+                fillCells(positions);
+                showAdded(added);
+            }
+        }
+    })();
+</script>
+
 </body>
 </html>
